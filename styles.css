@@ -1,0 +1,49 @@
+#body{
+	display:flex;
+	margin: 0 auto;
+	margin-top: 50px;
+	width:800px;
+	height: 400px;
+	background: blue;
+	border-radius: 10px;
+	position: relative;
+	display:flex;
+	justify-content: space-around;
+	flex-flow:row;
+	flex-wrap:wrap;
+	margin: 0 auto;
+	
+	
+}
+
+#timerDiv{
+	 padding: 80px;
+}
+
+#timer{
+ 	font-family: "Arial Black", Gadget, sans-serif;
+    font-size: 100px;
+
+}
+#buttonHolder{
+	width: 800px;
+	height:100px;
+	position: absolute;
+	bottom: 0px;
+	margin-bottom: 20px;
+	display:flex;
+	justify-content: space-around;
+	flex-flow:row;
+	flex-wrap:wrap;
+	}
+
+#workTime{
+	text-align: center;
+	font-family: "Arial Black", Gadget, sans-serif;
+
+}
+
+img{
+width: auto;
+max-height:100%;
+}
