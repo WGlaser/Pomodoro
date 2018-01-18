@@ -3,7 +3,7 @@ var timerState = "work";
 const buttonHolder = document.getElementById("buttonHolder");
 var storedMinutes = 25;
 var storedRest = 5;
-
+var width = 0;
 //initiate timer to 25:00
 document.getElementById('timer').innerHTML =
   storedMinutes+ ":0" + 0;
@@ -61,7 +61,7 @@ function arrowsClicked(){
 			if(this.id=="timeUp"){
 				 storedMinutes = m+1;
 				 document.getElementById('storedTimes').innerHTML = "Current Work Time is: " + storedMinutes + "minutes" + "||Current Rest Time is: " + storedRest + "minutes";
-
+				 document.getElementById('myBar').style.width = 0+"%";
 			}
 			if(this.id=="timeDown"){
 			     storedMinutes = m-1;
@@ -70,6 +70,8 @@ function arrowsClicked(){
 			     	storedMinutes = 1;
 			     }
 				 document.getElementById('storedTimes').innerHTML = "Current Work Time is: " + storedMinutes + "minutes" + "||Current Rest Time is: " + storedRest + "minutes";
+				 document.getElementById('myBar').style.width = 0+"%";
+
 			}
 			if(this.id=="restUp"){
 				 storedRest = storedRest+1;
@@ -97,6 +99,8 @@ function arrowsClicked(){
 arrowsClicked();
 
 function runTimer(){
+	var elem = document.getElementById("myBar");
+
 	if(buttonState== "play"){ //timer is paused
 		return;
 	}
@@ -109,11 +113,16 @@ function runTimer(){
 	if(m ==0 && s==0 && timerState =="work"){ //work clock just ended
 		m = storedRest;
 		s = checkSecond(0);
+		elem.style.width = 0 +'%'; //reset progress bar
+		elem.style.backgroundColor = "RED";
 		timerState= "play"; 
+
 	}
 	if(m ==0 && s==0 && timerState =="play"){ //play clock just ended
 		m = storedMinutes;
 		s = checkSecond(0);
+		elem.style.width = 0 +'%'; //reset progress bar
+		elem.style.backgroundColor = "GREEN";
 		timerstate="work";
 	}
 	if(s ==59){
@@ -121,9 +130,51 @@ function runTimer(){
 	}
 	document.getElementById('timer').innerHTML =
     	m + ":" + s;
-    	setTimeout(runTimer,1000);
+
+    	//now deal with progress bar
+    if(timerState =="work"){
+
+    var onePercentOfTime = (storedMinutes*60)*.01;
+    var elapsedTime = storedMinutes*60- ((m*60)+s);
+	}
+	if(timerState =="play"){
+
+   	 	var onePercentOfTime = (storedRest*60)*.01; 
+    	var elapsedTime = storedRest*60- ((m*60)+s);
+	}
+    console.log(onePercentOfTime);
+		width= elapsedTime/onePercentOfTime;;
+		console.log(width);
+
+		elem.style.width = width + '%';
+	}    
+    setTimeout(runTimer,1000);
+    }
+
+
+/*
+//progress bar
+function progBar(){
+	var elem = document.getElementById("myBar"); 
+    var width = 1;
+    var onePercentOfTime = (storedMinutes*60)*.01;
+    var id = setInterval(frame, 1000);
+    var timer = document.getElementById("timer");
+	var presentTime = timer.innerHTML;
+	var timeArray = presentTime.split(/[:]+/);
+	var m = parseInt(timeArray[0]);
+	var s = parseInt(timeArray[1]);
+	var currentTime = m*60 + s;
+    function frame() {
+        if (width >= 100) {
+            clearInterval(id);
+        } else {
+            if(((storedMinutes*60)- currentTime) == onePercentOfTime){
+            elem.style.width = width + '%'; 
+        }
     }
 }
+}*/
 
 //keeps seconds correct (Reset to 59 if below 0, add leading 0 to numbers less than 10.)
 function checkSecond(currentS){
