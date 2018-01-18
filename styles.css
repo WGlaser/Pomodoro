@@ -4,7 +4,6 @@
 	margin-top: 50px;
 	width:800px;
 	height: 400px;
-	background: blue;
 	border-radius: 10px;
 	position: relative;
 	display:flex;
@@ -23,6 +22,7 @@
 #timer{
  	font-family: "Arial Black", Gadget, sans-serif;
     font-size: 100px;
+    text-align: center;
 
 }
 #buttonHolder{
@@ -37,7 +37,7 @@
 	flex-wrap:wrap;
 	}
 
-#workTime{
+#storedTimes{
 	text-align: center;
 	font-family: "Arial Black", Gadget, sans-serif;
 

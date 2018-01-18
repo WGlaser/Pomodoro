@@ -1,18 +1,19 @@
 var buttonState = "play";
 var timerState = "work";
 const buttonHolder = document.getElementById("buttonHolder");
-var keyNames = ["timeUp","play", "timeDown"];
 var storedMinutes = 25;
+var storedRest = 5;
 
 //initiate timer to 25:00
 document.getElementById('timer').innerHTML =
   storedMinutes+ ":0" + 0;
 
-document.getElementById('workTime').innerHTML = "Current Work Time is: " + storedMinutes;
+document.getElementById('storedTimes').innerHTML = "Current Work Time is: " + storedMinutes + "minutes" + "||Current Rest Time is: " + storedRest + "minutes";
 
 
 
 //add buttons to screen
+var keyNames = ["timeUp", "timeDown" ,"play", "restUp", "restDown"];
 for (var i = 0; i<keyNames.length; i++){
 		const button = document.createElement('img');
 		button.classList.add('button');
@@ -48,7 +49,7 @@ playButtonClicked();
 
 //give arrow buttons functionality
 function arrowsClicked(){
-	var buttonNames = ["timeUp", "timeDown"];
+	var buttonNames = ["timeUp", "timeDown", "restUp","restDown"];
 	var timer = document.getElementById("timer");
 	var newM;
 	for(var i =0; i<buttonNames.length; i++){
@@ -59,15 +60,31 @@ function arrowsClicked(){
 			var m = parseInt(timeArray[0]);
 			if(this.id=="timeUp"){
 				 storedMinutes = m+1;
-				document.getElementById('workTime').innerHTML = "Current Work Time is: " + storedMinutes;
+				 document.getElementById('storedTimes').innerHTML = "Current Work Time is: " + storedMinutes + "minutes" + "||Current Rest Time is: " + storedRest + "minutes";
 
 			}
 			if(this.id=="timeDown"){
 			     storedMinutes = m-1;
-			     document.getElementById('workTime').innerHTML = "Current Work Time is: " + storedMinutes;
-
-			     
+			     if(storedMinutes<1){
+			     	alert("you can't work for less than one minute!")
+			     	storedMinutes = 1;
+			     }
+				 document.getElementById('storedTimes').innerHTML = "Current Work Time is: " + storedMinutes + "minutes" + "||Current Rest Time is: " + storedRest + "minutes";
 			}
+			if(this.id=="restUp"){
+				 storedRest = storedRest+1;
+				 document.getElementById('storedTimes').innerHTML = "Current Work Time is: " + storedMinutes + "minutes" + "||Current Rest Time is: " + storedRest + "minutes";
+
+			}
+			if(this.id=="restDown"){
+			     storedRest = storedRest-1;
+			     if(storedRest<1){
+			     	alert("you need to rest for at least a minute!")
+			     	storedRest = 1;
+			     }
+				 document.getElementById('storedTimes').innerHTML = "Current Work Time is: " + storedMinutes + "minutes" + "||Current Rest Time is: " + storedRest + "minutes";
+			}
+
 			if(buttonState =="play"){
 			timer.innerHTML = storedMinutes +":0" + 0;
 			}
@@ -80,7 +97,7 @@ function arrowsClicked(){
 arrowsClicked();
 
 function runTimer(){
-	if(buttonState== "play"){
+	if(buttonState== "play"){ //timer is paused
 		return;
 	}
 	else{
@@ -89,13 +106,13 @@ function runTimer(){
 	var timeArray = presentTime.split(/[:]+/);
 	var m = parseInt(timeArray[0]);
 	var s = checkSecond(parseInt(timeArray[1])-1); 
-	if(m ==0 && s==0 && timerState =="work"){
-		m = 5;
+	if(m ==0 && s==0 && timerState =="work"){ //work clock just ended
+		m = storedRest;
 		s = checkSecond(0);
-		timerState= "play";
+		timerState= "play"; 
 	}
-	if(m ==0 && s==0 && timerState =="play"){
-		m = 2;
+	if(m ==0 && s==0 && timerState =="play"){ //play clock just ended
+		m = storedMinutes;
 		s = checkSecond(0);
 		timerstate="work";
 	}
